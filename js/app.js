@@ -350,11 +350,11 @@ async function loadHomeFeed(api) {
 
 document.addEventListener('DOMContentLoaded', async () => {
     const api = new LosslessAPI(apiSettings);
-    const ui = new UIRenderer(api);
     
     const audioPlayer = document.getElementById('audio-player');
     const currentQuality = localStorage.getItem('playback-quality') || 'LOSSLESS';
     const player = new Player(audioPlayer, api, currentQuality);
+    const ui = new UIRenderer(api, player);
     
     const scrobbler = new LastFMScrobbler();
     

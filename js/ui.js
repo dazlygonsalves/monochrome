@@ -3,8 +3,9 @@ import { formatTime, createPlaceholder, trackDataStore, hasExplicitContent, getT
 import { recentActivityManager } from './storage.js';
 
 export class UIRenderer {
-    constructor(api) {
+    constructor(api, player) {
         this.api = api;
+        this.player = player;
     }
 
     createExplicitBadge() {
@@ -28,10 +29,15 @@ export class UIRenderer {
     const explicitBadge = hasExplicitContent(track) ? this.createExplicitBadge() : '';
     const trackArtists = getTrackArtists(track);
     const trackTitle = getTrackTitle(track);
+    const isCurrentTrack = this.player?.currentTrack?.id === track.id;
+    
     
     return `
-        <div class="track-item" data-track-id="${track.id}">
+        <div class="track-item ${isCurrentTrack ? 'playing' : ''}" data-track-id="${track.id}">
             ${trackNumberHTML}
+            <div class="equalizer">
+               <span></span><span></span><span></span>
+             </div>
             <div class="track-item-info">
                 ${showCover ? `<img src="${this.api.getCoverUrl(track.album?.cover, '80')}" alt="Track Cover" class="track-item-cover" loading="lazy">` : ''}
                 <div class="track-item-details">
